@@ -45,7 +45,7 @@ jobs:
         run: |
           git config --global user.email "coderwdd@gmail.com"
           git config --global user.name "coderwdd"
-          git clone git@github.com:coderwdd/Hexo.github.io.git .deploy_git
+          git clone git@github.com:CoderWDD/Hexo.github.io.git .deploy_git
           chmod 755 -R .deploy_git
           hexo clean
           hexo generate
