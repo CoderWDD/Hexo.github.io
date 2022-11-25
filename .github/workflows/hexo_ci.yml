@@ -51,7 +51,7 @@ jobs:
           hexo generate
 
       - name: Build docker container
-        runs:
+        run: |
           using: 'docker'
           images: '../../Dockerfile'
           args:
