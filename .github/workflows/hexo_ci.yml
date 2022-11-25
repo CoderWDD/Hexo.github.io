@@ -53,7 +53,7 @@ jobs:
       - name: Build docker container
         run: |
           using: 'docker'
-          images: '../../Dockerfile'
+          images: 'Dockerfile'
           args:
             - ${{ secrets.SSH_LOGIN_USERNAME }}
             - ${{ secrets.REMOTE_SERVER_IP }}
