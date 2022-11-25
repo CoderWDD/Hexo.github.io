@@ -1,5 +1,4 @@
 name: Hexo CI
-
 on:
   pull_request:
     branches: [main]
@@ -26,7 +25,6 @@ jobs:
         run: |
           npm install hexo-cli -g
           npm install
-
       - name: Add SSH private key to allow access to repository
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
@@ -40,26 +38,22 @@ jobs:
           HostName github.com
           IdentityFile ~/.ssh/id_rsa
           EOT
-
-      - name: Config git info
+      - name: Release GitHub Pages
         run: |
           git config --global user.email "coderwdd@gmail.com"
           git config --global user.name "coderwdd"
-          git clone git@github.com:CoderWDD/Hexo.github.io.git .deploy_git
+          git clone git@github.com:CoderWdd/Hexo.github.io.git .deploy_git
           chmod 755 -R .deploy_git
           hexo clean
           hexo generate
-
-      - name: Build docker container
-        run: |
-          using: 'docker'
-          images: 'Dockerfile'
-          args:
-            - ${{ secrets.SSH_LOGIN_USERNAME }}
-            - ${{ secrets.REMOTE_SERVER_IP }}
-            - ${{ secrets.SSH_PORT }}
-            - ${{ secrets.SSH_PRIVATE_KEY }}
-            - ./.deploy_git/*
-            - ~/coderwdd.top
-            - ""
-            - --exclude="./.deploy_git/.git/*"
+          hexo deploy
+      - name: Release blog to tencentyun Lighthouse Instance (Yvette)
+        uses: yeshan333/rsync-deploy-action@v1.0.0
+        with:
+          ssh_login_username: ${{ secrets.SSH_LOGIN_USERNAME }}
+          remote_server_ip: ${{ secrets.REMOTE_SERVER_IP }}
+          ssh_port: ${{ secrets.SSH_PORT }}
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source_path: ./.deploy_git/*
+          destination_path: ~/coderwdd.top
+          rsync_args: --exclude="./.deploy_git/.git/*"
