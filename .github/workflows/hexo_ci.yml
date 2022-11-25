@@ -1,0 +1,65 @@
+name: Hexo CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # from: https://github.com/actions/checkout
+      - name: Checkout Repository main branch
+        uses: actions/checkout@main
+
+      # from: https://github.com/actions/setup-node
+      - name: Setup Node.js 12.x
+        uses: actions/setup-node@main
+        with:
+          node-version: "18.4.0"
+
+      - name: Setup Hexo Blog Dependencies
+        run: |
+          npm install hexo-cli -g
+          npm install
+
+      - name: Add SSH private key to allow access to repository
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          echo "${{ secrets.HEXO_DEPLOY_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          cat <<EOT >> ~/.ssh/config
+          Host github.com
+          HostName github.com
+          IdentityFile ~/.ssh/id_rsa
+          EOT
+
+      - name: Config git info
+        run: |
+          git config --global user.email "coderwdd@gmail.com"
+          git config --global user.name "coderwdd"
+          git clone git@github.com:coderwdd/Hexo.github.io.git .deploy_git
+          chmod 755 -R .deploy_git
+          hexo clean
+          hexo generate
+
+      - name: Build docker container
+        runs:
+          using: 'docker'
+          images: '../../Dockerfile'
+          args:
+            - ${{ secrets.SSH_LOGIN_USERNAME }}
+            - ${{ secrets.REMOTE_SERVER_IP }}
+            - ${{ secrets.SSH_PORT }}
+            - ${{ secrets.SSH_PRIVATE_KEY }}
+            - ./.deploy_git/*
+            - ~/coderwdd.top
+            - ""
+            - --exclude="./.deploy_git/.git/*"
