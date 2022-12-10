@@ -102,4 +102,15 @@ theme: butterfly
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
-  type: ''
+- type: git
+  repo: https://github.com/CoderWDD/Hexo.github.io
+  branch: deploy
+- type: rsync
+  host: 43.139.105.224
+  user: ubuntu
+  root: /home/ubuntu/hexo/
+  port: 22
+  delete: true
+  verbose: true
+  ignore_errors: false
+
