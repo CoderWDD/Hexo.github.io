@@ -3,17 +3,16 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
+title: CoderWdd
 subtitle: ''
 description: ''
 keywords:
-author: John Doe
+author: CoderWdd
 language: en
-timezone: ''
+timezone: 'Asia/Shanghai'
 
 # URL
-## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: http://example.com
+url: https://coderwdd.top
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 pretty_urls:
@@ -103,7 +102,7 @@ theme: butterfly
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
 - type: git
-  repo: https://github.com/CoderWDD/Hexo.github.io
+  repo: git@github.com:CoderWDD/Hexo.github.io.git
   branch: deploy
 - type: rsync
   host: 43.139.105.224
