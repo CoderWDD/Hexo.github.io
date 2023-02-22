@@ -1,0 +1,260 @@
+<!DOCTYPE html><html lang="zh" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>物理内存_JavaHeap | CoderWdd</title><meta name="author" content="CoderWdd"><meta name="copyright" content="CoderWdd"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="referrer" content="no-referrer"><meta name="description" content="内存优化的三部曲 Java Heap 优化 Native 优化 虚拟内存 优化  Java Heap 组成 当 Android 虚拟机启动时，便会创建 Java 堆，后续所有 Java 对象所需要的内存都会从这个堆中分配   由不同的 Space 组成，且所有 Space 的创建，都是先通过 mmap 申请一块匿名内存，然后将这块内存放入对应的 Space 空间中进行管理 而划分不同 Space">
+<meta property="og:type" content="article">
+<meta property="og:title" content="物理内存_JavaHeap">
+<meta property="og:url" content="https://coderwdd.top/2023/02/22/android/intermediate/%E7%89%A9%E7%90%86%E5%86%85%E5%AD%98-javaheap/index.html">
+<meta property="og:site_name" content="CoderWdd">
+<meta property="og:description" content="内存优化的三部曲 Java Heap 优化 Native 优化 虚拟内存 优化  Java Heap 组成 当 Android 虚拟机启动时，便会创建 Java 堆，后续所有 Java 对象所需要的内存都会从这个堆中分配   由不同的 Space 组成，且所有 Space 的创建，都是先通过 mmap 申请一块匿名内存，然后将这块内存放入对应的 Space 空间中进行管理 而划分不同 Space">
+<meta property="og:locale">
+<meta property="og:image" content="https://www.dmoe.cc/random.php">
+<meta property="article:published_time" content="2023-02-22T06:09:07.000Z">
+<meta property="article:modified_time" content="2023-02-22T06:37:58.050Z">
+<meta property="article:author" content="CoderWdd">
+<meta property="article:tag" content="Android">
+<meta property="article:tag" content="性能优化">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.dmoe.cc/random.php"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://coderwdd.top/2023/02/22/android/intermediate/%E7%89%A9%E7%90%86%E5%86%85%E5%AD%98-javaheap/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: {"limitDay":500,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: 'days',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"Traditional Chinese Activated Manually","cht_to_chs":"Simplified Chinese Activated Manually","day_to_night":"Dark Mode Activated Manually","night_to_day":"Light Mode Activated Manually","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '物理内存_JavaHeap',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-02-22 14:37:58'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/favicon.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">21</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">21</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">8</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://www.dmoe.cc/random.php')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">CoderWdd</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">物理内存_JavaHeap</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2023-02-22T06:09:07.000Z" title="Created 2023-02-22 14:09:07">2023-02-22</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2023-02-22T06:37:58.050Z" title="Updated 2023-02-22 14:37:58">2023-02-22</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/android/">Android</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/android/intermediate/">Intermediate</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="物理内存_JavaHeap"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="内存优化的三部曲"><a href="#内存优化的三部曲" class="headerlink" title="内存优化的三部曲"></a>内存优化的三部曲</h2><ul>
+<li><strong><code>Java Heap</code> 优化</strong></li>
+<li><code>Native</code> 优化</li>
+<li><code>虚拟内存</code> 优化</li>
+</ul>
+<h2 id="Java-Heap-组成"><a href="#Java-Heap-组成" class="headerlink" title="Java Heap 组成"></a>Java Heap 组成</h2><blockquote>
+<p>当 Android 虚拟机启动时，便会创建 Java 堆，后续所有 Java 对象所需要的内存都会从这个堆中分配</p>
+</blockquote>
+<blockquote>
+<p>由不同的 <code>Space</code> 组成，且所有 <code>Space</code> 的创建，都是先通过 <code>mmap</code> 申请一块匿名内存，然后将这块内存放入对应的 <code>Space</code> 空间中进行管理</p>
+<p>而划分不同 <code>Space</code> 的原因，主要是：<strong>每个 <code>Space</code> 存放对象的性质都不一样，比如系统对象的存活周期非常长，而有些应用对象的存活周期非常短</strong>，并且不同的 <code>GC</code> 算法对空间的要求也不一样，标记清楚只需要一个空间，但是复制回收就需要两个空间，<strong>不同的 <code>Space</code> 对内存的申请和释放都不一样，适用的场景也不一样</strong></p>
+</blockquote>
+<ul>
+<li><strong>ImageSpace</strong></li>
+<li><strong>ZygoteSpace</strong></li>
+<li><strong>Non moving space</strong></li>
+<li><strong>LargeObjectSpace</strong></li>
+<li><strong>MainSpace</strong></li>
+</ul>
+<h3 id="ImageSpace"><a href="#ImageSpace" class="headerlink" title="ImageSpace"></a>ImageSpace</h3><blockquote>
+<p>用来存放 <strong>系统库</strong> 的对象，大小不固定。</p>
+</blockquote>
+<h3 id="ZygoteSpace"><a href="#ZygoteSpace" class="headerlink" title="ZygoteSpace"></a>ZygoteSpace</h3><blockquote>
+<p>存放 <code>Zygote</code> 进程在启动过程中 <strong>预加载和创建</strong> 的各种对象，应用进程为 <code>2M</code> 左右，<code>Zygote</code> 进程为 <code>64M</code>，挨着 <code>Image Space</code>。</p>
+</blockquote>
+<h3 id="Non-moving-space"><a href="#Non-moving-space" class="headerlink" title="Non moving space"></a>Non moving space</h3><blockquote>
+<p>如果非 <code>zygote</code> 或 <code>Native</code> 进程启动时（即应用进程，其 <code>ZygoteSpace</code> 为 <code>2M</code>），便会将 <code>ZygoteSpace</code> 切分出 <code>62M</code> 左右，当做 <code>non moving space</code>，用来存放一些 <strong>生命周期较长</strong> 的对象。</p>
+</blockquote>
+<h3 id="LargeObjectSpace"><a href="#LargeObjectSpace" class="headerlink" title="LargeObjectSpace"></a>LargeObjectSpace</h3><blockquote>
+<p>用来存放 <strong>大对象</strong>，大对象是大于 <code>12K</code> 的 <code>基本类型数组</code> 和 <code>String</code> 对象。</p>
+</blockquote>
+<h3 id="MainSpace"><a href="#MainSpace" class="headerlink" title="MainSpace"></a>MainSpace</h3><blockquote>
+<p>大对象以外的大部分的 Java 对象都会存放在这块空间。</p>
+</blockquote>
+<p><img src="http://picbed.coderwdd.top/picbed/9865353d11a44837aec2fd55a1e4aff3_tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.png" alt="9865353d11a44837aec2fd55a1e4aff3_tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0"></p>
+<ul>
+<li>值得注意的是，虽然 <code>MainSpace</code> 和 <code>Large Object Space</code> 都分配了 <code>512M</code> 的虚拟内存，但<code>512M</code> 只是这两个空间理论上可申请的最大内存，而在真正申请内存时，虚拟机会用 <strong>num_bytes_allocated_</strong> 这个标志位来记录已经分配的内存，不管是在 <code>MainSpace</code> 还是 <code>Large Object Space</code> 中分配的空间，都会通过这个标志位累加记录下，如果这个值超过了阈值(标志位为 <code>growth_limit_</code>)，就会抛出 <code>OOM</code></li>
+</ul>
+<h2 id="Java-对象的申请与释放"><a href="#Java-对象的申请与释放" class="headerlink" title="Java 对象的申请与释放"></a>Java 对象的申请与释放</h2><h3 id="申请对象的两种方式"><a href="#申请对象的两种方式" class="headerlink" title="申请对象的两种方式"></a>申请对象的两种方式</h3><blockquote>
+<p>在 <code>Java Heap</code> 中申请内存时，如果申请失败，或者申请完毕后超过了阈值，就会执行 <code>GC</code>，然后重新申请，如果还是内存不足，就 <code>OOM</code></p>
+</blockquote>
+<ul>
+<li><p>显示加载</p>
+<blockquote>
+<p>使用 <code>Class.forName()</code> 或者 <code>ClassLoader.loadClass()</code> 方式加载对象。</p>
+</blockquote>
+</li>
+<li><p>隐式加载</p>
+<blockquote>
+<p>使用 <code>new</code>，<strong>反射</strong> 或者访问静态变量或者函数加载对象。</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="对象释放流程"><a href="#对象释放流程" class="headerlink" title="对象释放流程"></a>对象释放流程</h3><blockquote>
+<p>对于 ART 虚拟机的垃圾回收器来说，<strong>是通过可达性分析来判断一个对象是否可以被回收</strong>。</p>
+</blockquote>
+<ul>
+<li>选择合适的 <code>GarbageCollector</code>（垃圾回收器），并设置好这个 <code>collector</code> 的环境，如 <code>kCollectorTypeSS</code>（半空间回收）就会设置好 <code>FromSpace</code> 和 <code>ToSpace</code>。</li>
+<li>接着调用执行 <code>collector-&gt;Run</code> 接口，<code>collector</code> 会执行对象的回收策略</li>
+</ul>
+<h2 id="优化方案"><a href="#优化方案" class="headerlink" title="优化方案"></a>优化方案</h2><blockquote>
+<p>优化的目的是，让 <code>Jave Heap</code> 中保持尽量充足的空间，主要的三种思路，一个是 <strong>减少来源</strong>，一个是 <strong>促进回收</strong>，一个是 <strong>增大储蓄</strong></p>
+</blockquote>
+<ul>
+<li>三种基本方法论：<ul>
+<li><strong>减少加载进程</strong> <strong>Java</strong> <strong>堆的数据</strong></li>
+<li><strong>及时清理加载进</strong> <strong>Java</strong> <strong>堆的数据</strong></li>
+<li><strong>增加</strong> <strong>Java</strong> <strong>堆空间可用大小</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="减少加载进-Java-堆的数据"><a href="#减少加载进-Java-堆的数据" class="headerlink" title="减少加载进 Java 堆的数据"></a>减少加载进 Java 堆的数据</h3><ul>
+<li>减少堆里的数据，可以从以下几个角度出发：<ul>
+<li>减少缓存大小</li>
+<li>按需加载数据</li>
+<li>转移数据</li>
+</ul>
+</li>
+</ul>
+<h4 id="转移数据"><a href="#转移数据" class="headerlink" title="转移数据"></a>转移数据</h4><ul>
+<li><strong>将 Java 堆的数据转移到 Native 中。</strong><ul>
+<li>如 <code>Bitmap</code></li>
+</ul>
+</li>
+<li><strong>将当前进程中 Java 堆的数据转移到其他进程中。</strong></li>
+</ul>
+<h3 id="及时清理加载进-Java-堆的数据"><a href="#及时清理加载进-Java-堆的数据" class="headerlink" title="及时清理加载进 Java 堆的数据"></a>及时清理加载进 Java 堆的数据</h3><blockquote>
+<p>如在业务结束和内存不足时，主动销毁已经不需要的对象</p>
+</blockquote>
+<h3 id="增加-Java-堆空间可用大小"><a href="#增加-Java-堆空间可用大小" class="headerlink" title="增加 Java 堆空间可用大小"></a>增加 Java 堆空间可用大小</h3><blockquote>
+<p>通过 <code>Hook ART</code> 虚拟机技术，来修改分配给 <code>Java Heap</code> 的空间大小</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="https://coderwdd.top">CoderWdd</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://coderwdd.top/2023/02/22/android/intermediate/%E7%89%A9%E7%90%86%E5%86%85%E5%AD%98-javaheap/">https://coderwdd.top/2023/02/22/android/intermediate/%E7%89%A9%E7%90%86%E5%86%85%E5%AD%98-javaheap/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/android/">Android</a><a class="post-meta__tags" href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">性能优化</a></div><div class="post_share"><div class="social-share" data-image="https://www.dmoe.cc/random.php" data-sites="facebook,twitter,google,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2023/02/22/android/intermediate/app%E7%9A%84%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/"><img class="next-cover" src="https://www.dmoe.cc/random.php" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">App的内存模型</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2023/02/22/android/intermediate/app%E7%9A%84%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/" title="App的内存模型"><img class="cover" src="https://www.dmoe.cc/random.php" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-22</div><div class="title">App的内存模型</div></div></a></div><div><a href="/2022/12/12/test-md/" title="test.md"><img class="cover" src="https://www.dmoe.cc/random.php" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-12-12</div><div class="title">test.md</div></div></a></div><div><a href="/2023/02/20/android/advanced/view-dispatchtouchevent/" title="View_dispatchTouchEvent"><img class="cover" src="https://www.dmoe.cc/random.php" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-20</div><div class="title">View_dispatchTouchEvent</div></div></a></div><div><a href="/2023/02/21/android/advanced/viewgroup-dispatchtouchevent/" title="ViewGroup_dispatchTouchEvent"><img class="cover" src="https://www.dmoe.cc/random.php" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-21</div><div class="title">ViewGroup_dispatchTouchEvent</div></div></a></div><div><a href="/2023/02/21/android/intermediate/flutter-apprun-%E7%AE%80%E5%8D%95%E8%A7%A3%E6%9E%90/" title="Flutter_AppRun_简单解析"><img class="cover" src="https://www.dmoe.cc/random.php" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-21</div><div class="title">Flutter_AppRun_简单解析</div></div></a></div><div><a href="/2023/02/21/android/intermediate/flutter-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E5%BF%85%E5%A4%87/" title="Flutter_基础知识必备"><img class="cover" src="https://www.dmoe.cc/random.php" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-21</div><div class="title">Flutter_基础知识必备</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/favicon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">CoderWdd</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">21</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">21</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">8</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/CoderWdd"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/CoderWDD" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:coderwdd@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96%E7%9A%84%E4%B8%89%E9%83%A8%E6%9B%B2"><span class="toc-number">1.</span> <span class="toc-text">内存优化的三部曲</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Java-Heap-%E7%BB%84%E6%88%90"><span class="toc-number">2.</span> <span class="toc-text">Java Heap 组成</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ImageSpace"><span class="toc-number">2.1.</span> <span class="toc-text">ImageSpace</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ZygoteSpace"><span class="toc-number">2.2.</span> <span class="toc-text">ZygoteSpace</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Non-moving-space"><span class="toc-number">2.3.</span> <span class="toc-text">Non moving space</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LargeObjectSpace"><span class="toc-number">2.4.</span> <span class="toc-text">LargeObjectSpace</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MainSpace"><span class="toc-number">2.5.</span> <span class="toc-text">MainSpace</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Java-%E5%AF%B9%E8%B1%A1%E7%9A%84%E7%94%B3%E8%AF%B7%E4%B8%8E%E9%87%8A%E6%94%BE"><span class="toc-number">3.</span> <span class="toc-text">Java 对象的申请与释放</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%B3%E8%AF%B7%E5%AF%B9%E8%B1%A1%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F"><span class="toc-number">3.1.</span> <span class="toc-text">申请对象的两种方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E9%87%8A%E6%94%BE%E6%B5%81%E7%A8%8B"><span class="toc-number">3.2.</span> <span class="toc-text">对象释放流程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%98%E5%8C%96%E6%96%B9%E6%A1%88"><span class="toc-number">4.</span> <span class="toc-text">优化方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%8F%E5%B0%91%E5%8A%A0%E8%BD%BD%E8%BF%9B-Java-%E5%A0%86%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="toc-number">4.1.</span> <span class="toc-text">减少加载进 Java 堆的数据</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BD%AC%E7%A7%BB%E6%95%B0%E6%8D%AE"><span class="toc-number">4.1.1.</span> <span class="toc-text">转移数据</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8A%E6%97%B6%E6%B8%85%E7%90%86%E5%8A%A0%E8%BD%BD%E8%BF%9B-Java-%E5%A0%86%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="toc-number">4.2.</span> <span class="toc-text">及时清理加载进 Java 堆的数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A2%9E%E5%8A%A0-Java-%E5%A0%86%E7%A9%BA%E9%97%B4%E5%8F%AF%E7%94%A8%E5%A4%A7%E5%B0%8F"><span class="toc-number">4.3.</span> <span class="toc-text">增加 Java 堆空间可用大小</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/02/22/android/intermediate/%E7%89%A9%E7%90%86%E5%86%85%E5%AD%98-javaheap/" title="物理内存_JavaHeap"><img src="https://www.dmoe.cc/random.php" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="物理内存_JavaHeap"/></a><div class="content"><a class="title" href="/2023/02/22/android/intermediate/%E7%89%A9%E7%90%86%E5%86%85%E5%AD%98-javaheap/" title="物理内存_JavaHeap">物理内存_JavaHeap</a><time datetime="2023-02-22T06:09:07.000Z" title="Created 2023-02-22 14:09:07">2023-02-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/22/android/intermediate/app%E7%9A%84%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/" title="App的内存模型"><img src="https://www.dmoe.cc/random.php" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="App的内存模型"/></a><div class="content"><a class="title" href="/2023/02/22/android/intermediate/app%E7%9A%84%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/" title="App的内存模型">App的内存模型</a><time datetime="2023-02-22T04:51:20.000Z" title="Created 2023-02-22 12:51:20">2023-02-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/22/algorithm/leetcode-%E5%89%91%E6%8C%87offer-ii-070-%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E5%8F%AA%E5%87%BA%E7%8E%B0%E4%B8%80%E6%AC%A1%E7%9A%84%E6%95%B0%E5%AD%97/" title="Leetcode_剑指Offer_II_070-排序数组中只出现一次的数字"><img src="https://www.dmoe.cc/random.php" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Leetcode_剑指Offer_II_070-排序数组中只出现一次的数字"/></a><div class="content"><a class="title" href="/2023/02/22/algorithm/leetcode-%E5%89%91%E6%8C%87offer-ii-070-%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E5%8F%AA%E5%87%BA%E7%8E%B0%E4%B8%80%E6%AC%A1%E7%9A%84%E6%95%B0%E5%AD%97/" title="Leetcode_剑指Offer_II_070-排序数组中只出现一次的数字">Leetcode_剑指Offer_II_070-排序数组中只出现一次的数字</a><time datetime="2023-02-22T03:30:42.000Z" title="Created 2023-02-22 11:30:42">2023-02-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/22/algorithm/leetcode-142-%E7%8E%AF%E5%BD%A2%E9%93%BE%E8%A1%A8-ii/" title="Leetcode_142-环形链表_II"><img src="https://www.dmoe.cc/random.php" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Leetcode_142-环形链表_II"/></a><div class="content"><a class="title" href="/2023/02/22/algorithm/leetcode-142-%E7%8E%AF%E5%BD%A2%E9%93%BE%E8%A1%A8-ii/" title="Leetcode_142-环形链表_II">Leetcode_142-环形链表_II</a><time datetime="2023-02-22T03:21:26.000Z" title="Created 2023-02-22 11:21:26">2023-02-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/21/android/intermediate/flutter-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E5%BF%85%E5%A4%87/" title="Flutter_基础知识必备"><img src="https://www.dmoe.cc/random.php" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Flutter_基础知识必备"/></a><div class="content"><a class="title" href="/2023/02/21/android/intermediate/flutter-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E5%BF%85%E5%A4%87/" title="Flutter_基础知识必备">Flutter_基础知识必备</a><time datetime="2023-02-21T07:39:38.000Z" title="Created 2023-02-21 15:39:38">2023-02-21</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023 By CoderWdd</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">备案编号：桂ICP备2022010533号</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
