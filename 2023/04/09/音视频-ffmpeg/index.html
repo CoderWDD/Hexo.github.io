@@ -1,0 +1,564 @@
+<!DOCTYPE html><html lang="zh" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>音视频_FFmpeg | CoderWdd</title><meta name="author" content="CoderWdd"><meta name="copyright" content="CoderWdd"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="referrer" content="no-referrer"><meta name="description" content="什么是 FFmpegFFmpeg 是一套开源的跨平台音视频处理工具集，可以实现音视频的 编解码、转码、处理、播放 等功能。 FFmpeg 支持几乎所有的音视频编解码格式，包括常见的 MP4、AVI、MKV、FLV、WMV、MOV、MP3、AAC 等格式，也支持一些专业的视频格式和音频格式。 FFmpeg 是跨平台的，因此可以在各种操作系统上使用，例如 Windows、macOS、Linux 等。同">
+<meta property="og:type" content="article">
+<meta property="og:title" content="音视频_FFmpeg">
+<meta property="og:url" content="https://coderwdd.top/2023/04/09/%E9%9F%B3%E8%A7%86%E9%A2%91-ffmpeg/index.html">
+<meta property="og:site_name" content="CoderWdd">
+<meta property="og:description" content="什么是 FFmpegFFmpeg 是一套开源的跨平台音视频处理工具集，可以实现音视频的 编解码、转码、处理、播放 等功能。 FFmpeg 支持几乎所有的音视频编解码格式，包括常见的 MP4、AVI、MKV、FLV、WMV、MOV、MP3、AAC 等格式，也支持一些专业的视频格式和音频格式。 FFmpeg 是跨平台的，因此可以在各种操作系统上使用，例如 Windows、macOS、Linux 等。同">
+<meta property="og:locale">
+<meta property="og:image" content="https://www.dmoe.cc/random.php">
+<meta property="article:published_time" content="2023-04-09T07:06:47.000Z">
+<meta property="article:modified_time" content="2023-04-09T07:07:37.162Z">
+<meta property="article:author" content="CoderWdd">
+<meta property="article:tag" content="音视频">
+<meta property="article:tag" content="FFmpeg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.dmoe.cc/random.php"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://coderwdd.top/2023/04/09/%E9%9F%B3%E8%A7%86%E9%A2%91-ffmpeg/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: {"limitDay":500,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: 'days',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"Traditional Chinese Activated Manually","cht_to_chs":"Simplified Chinese Activated Manually","day_to_night":"Dark Mode Activated Manually","night_to_day":"Light Mode Activated Manually","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '音视频_FFmpeg',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-04-09 15:07:37'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/favicon.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">81</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">60</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">15</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://www.dmoe.cc/random.php')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">CoderWdd</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">音视频_FFmpeg</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2023-04-09T07:06:47.000Z" title="Created 2023-04-09 15:06:47">2023-04-09</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2023-04-09T07:07:37.162Z" title="Updated 2023-04-09 15:07:37">2023-04-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91/">音视频</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91/ffmpeg/">FFmpeg</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="音视频_FFmpeg"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="什么是-FFmpeg"><a href="#什么是-FFmpeg" class="headerlink" title="什么是 FFmpeg"></a>什么是 <code>FFmpeg</code></h2><p><code>FFmpeg</code> 是一套开源的跨平台音视频处理工具集，可以实现音视频的 <strong>编解码、转码、处理、播放</strong> 等功能。</p>
+<p><code>FFmpeg</code> 支持几乎所有的音视频编解码格式，包括常见的 <code>MP4、AVI、MKV、FLV、WMV、MOV、MP3、AAC</code> 等格式，也支持一些专业的视频格式和音频格式。</p>
+<p><code>FFmpeg</code> 是跨平台的，因此可以在各种操作系统上使用，例如 <code>Windows</code>、<code>macOS</code>、<code>Linux</code> 等。同时，<code>FFmpeg</code> 还提供了各种语言的 <code>API</code> 和库，包括 <code>C语言、C++、Python、Java、Swift</code> 等，方便开发者集成和调用 <code>FFmpeg</code> 的功能。</p>
+<h2 id="FFmpeg-的组成库"><a href="#FFmpeg-的组成库" class="headerlink" title="FFmpeg 的组成库"></a><code>FFmpeg</code> 的组成库</h2><h3 id="libavcodec：-provides-implementation-of-a-wider-range-of-codecs"><a href="#libavcodec：-provides-implementation-of-a-wider-range-of-codecs" class="headerlink" title="libavcodec： provides implementation of a wider range of codecs."></a><code>libavcodec</code>： provides implementation of a wider range of codecs.</h3><ul>
+<li>功能：<ul>
+<li>可以实现音视频编解码的功能，提供了丰富的音视频编解码库和 <code>API</code>，可以支持多种音视频格式的编解码，例如 <code>H.264、AAC、MP3、VP9、AV1</code> 等。</li>
+</ul>
+</li>
+<li>特点：<ul>
+<li>支持多种音视频格式的编解码：比如支持 <code>H.264、AAC、MP3、VP9、AV1</code> 等格式</li>
+</ul>
+</li>
+</ul>
+<h3 id="libavformat：-implements-streaming-protocols-container-formats-and-basic-I-x2F-O-access"><a href="#libavformat：-implements-streaming-protocols-container-formats-and-basic-I-x2F-O-access" class="headerlink" title="libavformat： implements streaming protocols, container formats and basic I&#x2F;O access."></a><code>libavformat</code>： implements streaming protocols, container formats and basic I&#x2F;O access.</h3><ul>
+<li>功能：<ul>
+<li>可以实现音视频文件的读取、写入、封装、解封装等操作，同时还可以对音视频文件进行转换、拼接、剪辑等操作</li>
+</ul>
+</li>
+<li>特点：<ul>
+<li>支持多种音视频格式的 <strong>解封装</strong> 和 <strong>封装</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="libavutil：-includes-hashers-decompressors-and-miscellaneous-utility-functions"><a href="#libavutil：-includes-hashers-decompressors-and-miscellaneous-utility-functions" class="headerlink" title="libavutil： includes hashers, decompressors and miscellaneous utility functions."></a><code>libavutil</code>： includes hashers, decompressors and miscellaneous utility functions.</h3><p>基础工具库，提供了各种常用的工具函数和数据结构，供 <code>FFmpeg</code> 其他组件调用</p>
+<ul>
+<li>功能包括：<ul>
+<li>数据结构：包括链表、队列、堆、哈希表、树等数据结构，为音视频处理提供了基础的数据结构支持。</li>
+<li>算法：包括排序、查找、编码、解码、加密、解密等算法，为音视频处理提供了基础的算法支持。</li>
+<li>数学：包括矩阵、向量、统计、概率等数学工具，为音视频处理提供了基础的数学支持。</li>
+<li>字节操作：包括位操作、字节序转换、字节流拼接等工具，为音视频处理提供了基础的字节操作支持。</li>
+<li>日志输出：包括错误日志、调试日志、统计日志等功能，为音视频处理提供了基础的日志输出支持。</li>
+</ul>
+</li>
+<li>特点：<ul>
+<li>高效、可靠、可移植</li>
+<li>高度模块化</li>
+<li>易于扩展和集成</li>
+</ul>
+</li>
+</ul>
+<h3 id="libavfilter：-provides-means-to-alter-decoded-audio-and-video-through-a-directed-graph-of-connected-filters"><a href="#libavfilter：-provides-means-to-alter-decoded-audio-and-video-through-a-directed-graph-of-connected-filters" class="headerlink" title="libavfilter： provides means to alter decoded audio and video through a directed graph of connected filters."></a><code>libavfilter</code>： provides means to alter decoded audio and video through a directed graph of connected filters.</h3><ul>
+<li>功能：<ul>
+<li>实现音视频滤镜处理的功能，例如字幕、变速、变调、颜色调整、降噪、模糊、马赛克等</li>
+</ul>
+</li>
+<li>特点：<ul>
+<li>支持多种音视频滤镜的处理：变速、变调、颜色调整、降噪、模糊、马赛克等</li>
+<li>可以有多个输入和多个输出</li>
+</ul>
+</li>
+</ul>
+<h3 id="libavdevice：-provides-an-abstraction-to-access-capture-and-playback-devices"><a href="#libavdevice：-provides-an-abstraction-to-access-capture-and-playback-devices" class="headerlink" title="libavdevice： provides an abstraction to access capture and playback devices."></a><code>libavdevice</code>： provides an abstraction to access capture and playback devices.</h3><ul>
+<li>功能：<ul>
+<li>实现支持多种音视频设备的 <strong>采集和输出</strong> 的功能，例如摄像头、麦克风、扬声器、音频接口等</li>
+</ul>
+</li>
+<li>特点：<ul>
+<li>支持多种音视频设备的采集和输出</li>
+</ul>
+</li>
+</ul>
+<h3 id="libswresample：-implements-audio-mixing-and-resampling-routines"><a href="#libswresample：-implements-audio-mixing-and-resampling-routines" class="headerlink" title="libswresample： implements audio mixing and resampling routines."></a><code>libswresample</code>： implements audio mixing and resampling routines.</h3><ul>
+<li>功能：<ul>
+<li>实现音频重采样的功能</li>
+<li>可以支持多种音频格式之间的转换，例如从 <code>48kHz</code> 转换为 <code>44.1kHz</code>、从双声道转换为单声道</li>
+</ul>
+</li>
+<li>特点：<ul>
+<li>支持多种音频格式之间的转换</li>
+</ul>
+</li>
+</ul>
+<h3 id="libswscale：-implements-color-conversion-and-scaling-routines"><a href="#libswscale：-implements-color-conversion-and-scaling-routines" class="headerlink" title="libswscale： implements color conversion and scaling routines."></a><code>libswscale</code>： implements color conversion and scaling routines.</h3><ul>
+<li>功能：<ul>
+<li>实现视频像素格式和尺寸的缩放和转换的功能，支持多种视频像素格式之间的转换和多种视频尺寸之间的缩放，例如从 <code>1080p</code> 转换成 <code>720p</code> 或者 <code>480p</code> 等的缩放</li>
+</ul>
+</li>
+<li>特点：<ul>
+<li>支持多种视频像素格式之间的转换：包括 <code>YUV420P</code>、<code>YUV422P</code>、<code>RGB24</code>、<code>RGBA</code> 等</li>
+<li>支持多种视频尺寸之间的缩放：包括缩小、放大、裁剪等</li>
+</ul>
+</li>
+</ul>
+<h2 id="FFmpeg-语法"><a href="#FFmpeg-语法" class="headerlink" title="FFmpeg 语法"></a><code>FFmpeg</code> 语法</h2><p>最详细权威的用法，请查看 <a target="_blank" rel="noopener" href="https://ffmpeg.org/ffmpeg.html">官方文档</a></p>
+<h3 id="基本语法格式"><a href="#基本语法格式" class="headerlink" title="基本语法格式"></a>基本语法格式</h3><p><code>ffmpeg [global_options] &#123;[input_file_options] -i input_url&#125; ... &#123;[output_file_options] output_url&#125; ...</code></p>
+<ul>
+<li>命令组成介绍：<ul>
+<li><code>global_options</code>：全局选项，包括 <code>FFmpeg</code> 的一些通用参数和选项，例如日志级别、硬件加速、线程数等。</li>
+<li><code>input_file_options</code>：输入文件选项，包括 <code>FFmpeg</code> 对输入文件的一些处理参数和选项，例如输入格式、采样率、分辨率、视频编解码器、音频编解码器等。</li>
+<li><code>-i input_url</code>：输入文件的URL，用于指定 <code>FFmpeg</code> 要处理的输入文件。可以是本地文件路径，也可以是HTTP、FTP、RTSP等网络流媒体协议的URL地址。</li>
+<li><code>output_file_options</code>：输出文件选项，包括 <code>FFmpeg</code> 对输出文件的一些处理参数和选项，例如输出格式、输出比特率、输出分辨率、视频编解码器、音频编解码器等。</li>
+<li><code>output_url</code>：输出文件的 <code>URL</code>，用于指定 <code>FFmpeg</code> 处理后的输出文件。可以是本地文件路径，也可以是 <code>HTTP</code>、<code>FTP</code>、<code>RTSP</code> 等网络流媒体协议的 <code>URL</code> 地址。</li>
+</ul>
+</li>
+<li>不同的括号作用：<ul>
+<li>方括号 <code>[]</code> 表示选项是可选的，可以选择性地添加或省略该选项，如果省略，则使用默认值或 <code>FFmpeg</code> 自动检测的值。例如，<code>[output_file_options]</code> 表示指定输出文件选项是可选的</li>
+<li>花括号 <code>&#123;&#125;</code> 表示选项是必选的，必须从花括号内的选项中选择一个或多个选项进行指定。例如，<code>&#123;[input_file_options] -i input_url&#125;</code> 表示必须选择一个或多个输入文件选项，并指定一个输入文件的 <code>URL</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="音频选项"><a href="#音频选项" class="headerlink" title="音频选项"></a>音频选项</h3><table>
+<thead>
+<tr>
+<th>Option</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-aframes number</td>
+<td>设置输出的音频帧数</td>
+</tr>
+<tr>
+<td>-aq quality</td>
+<td>设置音频质量（编解码器特定）</td>
+</tr>
+<tr>
+<td>-ar rate</td>
+<td>设置音频采样率（以Hz为单位）</td>
+</tr>
+<tr>
+<td>-ac channels</td>
+<td>设置音频通道数</td>
+</tr>
+<tr>
+<td>-an</td>
+<td>禁用音频</td>
+</tr>
+<tr>
+<td>-acodec codec</td>
+<td>强制指定音频编解码器（使用’copy’表示复制流）</td>
+</tr>
+<tr>
+<td>-ab bitrate</td>
+<td>音频比特率（请使用-b:a选项）</td>
+</tr>
+<tr>
+<td>-af filter_graph</td>
+<td>设置音频滤镜</td>
+</tr>
+<tr>
+<td>-s size</td>
+<td>设置帧大小（WxH或缩写）</td>
+</tr>
+<tr>
+<td>-sn</td>
+<td>禁用字幕</td>
+</tr>
+<tr>
+<td>-scodec codec</td>
+<td>强制指定字幕编解码器（使用’copy’表示复制流）</td>
+</tr>
+<tr>
+<td>-stag fourcc&#x2F;tag</td>
+<td>强制指定字幕tag&#x2F;fourcc</td>
+</tr>
+<tr>
+<td>-fix_sub_duration</td>
+<td>修正字幕持续时间</td>
+</tr>
+<tr>
+<td>-canvas_size size</td>
+<td>设置画布大小（WxH或缩写）</td>
+</tr>
+<tr>
+<td>-spre preset</td>
+<td>将字幕选项设置为指定的预设</td>
+</tr>
+</tbody></table>
+<h3 id="视频选项"><a href="#视频选项" class="headerlink" title="视频选项"></a>视频选项</h3><table>
+<thead>
+<tr>
+<th>Option</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-vframes number</td>
+<td>设置输出的视频帧数</td>
+</tr>
+<tr>
+<td>-r rate</td>
+<td>设置帧率（以Hz值、分数或缩写表示）</td>
+</tr>
+<tr>
+<td>-fpsmax rate</td>
+<td>设置最大帧率（以Hz值、分数或缩写表示）</td>
+</tr>
+<tr>
+<td>-s size</td>
+<td>设置帧大小（WxH或缩写）</td>
+</tr>
+<tr>
+<td>-aspect aspect</td>
+<td>设置宽高比（4:3、16:9或1.3333、1.7777）</td>
+</tr>
+<tr>
+<td>-display_rotation angle</td>
+<td>设置流的纯逆时针旋转角度</td>
+</tr>
+<tr>
+<td>-display_hflip</td>
+<td>设置流的水平翻转（如果未设置，则覆盖任何显示旋转）</td>
+</tr>
+<tr>
+<td>-display_vflip</td>
+<td>设置流的垂直翻转（如果未设置，则覆盖任何显示旋转）</td>
+</tr>
+<tr>
+<td>-vn</td>
+<td>禁用视频</td>
+</tr>
+<tr>
+<td>-vcodec codec</td>
+<td>强制指定视频编解码器（使用’copy’表示复制流）</td>
+</tr>
+<tr>
+<td>-timecode hh:mm:ss[:;.]ff</td>
+<td>设置初始时间码值</td>
+</tr>
+<tr>
+<td>-pass n</td>
+<td>选择通过数（1到3）</td>
+</tr>
+<tr>
+<td>-vf filter_graph</td>
+<td>设置视频滤镜</td>
+</tr>
+<tr>
+<td>-b bitrate</td>
+<td>视频比特率（请使用-b:v选项）</td>
+</tr>
+<tr>
+<td>-dn</td>
+<td>禁用数据</td>
+</tr>
+</tbody></table>
+<h3 id="文件选项"><a href="#文件选项" class="headerlink" title="文件选项"></a>文件选项</h3><table>
+<thead>
+<tr>
+<th>Option</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-f fmt</td>
+<td>强制指定输出格式</td>
+</tr>
+<tr>
+<td>-c codec</td>
+<td>指定编解码器</td>
+</tr>
+<tr>
+<td>-codec codec</td>
+<td>指定编解码器</td>
+</tr>
+<tr>
+<td>-pre preset</td>
+<td>指定预设</td>
+</tr>
+<tr>
+<td>-map_metadata outfile[,metadata]:infile[,metadata]</td>
+<td>从输入文件中设置输出文件的元数据信息</td>
+</tr>
+<tr>
+<td>-t duration</td>
+<td>记录或转码”duration”秒的音频&#x2F;视频</td>
+</tr>
+<tr>
+<td>-to time_stop</td>
+<td>转码停止时间</td>
+</tr>
+<tr>
+<td>-fs limit_size</td>
+<td>设置文件大小限制（以字节为单位）</td>
+</tr>
+<tr>
+<td>-ss time_off</td>
+<td>设置开始时间偏移</td>
+</tr>
+<tr>
+<td>-sseof time_off</td>
+<td>设置相对于文件结尾的开始时间偏移量</td>
+</tr>
+<tr>
+<td>-seek_timestamp</td>
+<td>启用&#x2F;禁用通过时间戳进行跳转（使用-ss选项）</td>
+</tr>
+<tr>
+<td>-timestamp time</td>
+<td>设置录制时间戳（’now’表示设置当前时间）</td>
+</tr>
+<tr>
+<td>-metadata string&#x3D;string</td>
+<td>添加元数据</td>
+</tr>
+<tr>
+<td>-program title&#x3D;string:st&#x3D;number…</td>
+<td>添加带有指定流的程序</td>
+</tr>
+<tr>
+<td>-target type</td>
+<td>指定目标文件类型（”vcd”、”svcd”、”dvd”、”dv”或”dv50”，可以使用可选的前缀”pal-“、”ntsc-“或”film-“）</td>
+</tr>
+<tr>
+<td>-apad</td>
+<td>音频补齐</td>
+</tr>
+<tr>
+<td>-frames number</td>
+<td>设置要输出的帧数</td>
+</tr>
+<tr>
+<td>-filter filter_graph</td>
+<td>设置流过滤器图</td>
+</tr>
+<tr>
+<td>-filter_script filename</td>
+<td>从文件中读取流过滤器图描述</td>
+</tr>
+<tr>
+<td>-reinit_filter</td>
+<td>在输入参数更改时重新初始化过滤器图</td>
+</tr>
+<tr>
+<td>-discard</td>
+<td>丢弃</td>
+</tr>
+<tr>
+<td>-disposition</td>
+<td>布置</td>
+</tr>
+</tbody></table>
+<h3 id="全局选项"><a href="#全局选项" class="headerlink" title="全局选项"></a>全局选项</h3><p>与上面的选项不同，这里的选项，是会影响整个程序最后的结果的，而不是只影响某一个文件</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-loglevel loglevel</td>
+<td>设置日志级别</td>
+</tr>
+<tr>
+<td>-v loglevel</td>
+<td>设置日志级别</td>
+</tr>
+<tr>
+<td>-report</td>
+<td>生成报告</td>
+</tr>
+<tr>
+<td>-max_alloc bytes</td>
+<td>设置单个分配块的最大大小</td>
+</tr>
+<tr>
+<td>-y</td>
+<td>覆盖输出文件</td>
+</tr>
+<tr>
+<td>-n</td>
+<td>永不覆盖输出文件</td>
+</tr>
+<tr>
+<td>-ignore_unknown</td>
+<td>忽略未知的流类型</td>
+</tr>
+<tr>
+<td>-filter_threads</td>
+<td>非复杂过滤器线程数</td>
+</tr>
+<tr>
+<td>-filter_complex_threads</td>
+<td>-filter_complex的线程数</td>
+</tr>
+<tr>
+<td>-stats</td>
+<td>在编码期间打印进度报告</td>
+</tr>
+<tr>
+<td>-max_error_rate</td>
+<td>设置解码错误率的最大值（0.0：无错误，1.0：100％错误），超过此值FFmpeg将返回错误而不是成功。</td>
+</tr>
+</tbody></table>
+<h2 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h2><ul>
+<li><strong>解封装</strong>：<code>FFmpeg</code> 会读取输入文件中的音视频流，并将其解封装为各自的编解码器所需的数据格式。这个过程可以通过指定输入文件格式来实现。</li>
+<li><strong>解码</strong>：<code>FFmpeg</code> 将音视频流中的原始数据解码为 <code>PCM</code> 音频或像素数据。解码后的数据可以通过指定的输出编解码器进行编码。</li>
+<li><strong>编码</strong>：<code>FFmpeg</code> 将解码后的音视频数据编码为特定格式的音视频流。编码器通常会根据指定的输出质量和参数进行调整。</li>
+<li><strong>过滤</strong>：<code>FFmpeg </code>可以应用各种音视频滤镜来处理解码后的音视频数据。滤镜可以用于处理音频，视频或两者同时处理。</li>
+<li><strong>封装</strong>：<code>FFmpeg</code> 将编码后的音视频流封装为特定的容器格式。容器格式是包含音频和视频流的文件格式，通常是 <code>.avi、.mp4</code> 等格式。封装器会根据指定的输出格式生成相应的容器文件。</li>
+<li><strong>输出</strong>：<code>FFmpeg</code> 将封装后的音视频流输出到指定的输出文件或流中，以供后续处理或观看。</li>
+</ul>
+<h2 id="推荐-x2F-参考"><a href="#推荐-x2F-参考" class="headerlink" title="推荐&#x2F;参考"></a>推荐&#x2F;参考</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000041612695?utm_source=sf-similar-article">音视频——FFmpeg入门</a></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="https://coderwdd.top">CoderWdd</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://coderwdd.top/2023/04/09/%E9%9F%B3%E8%A7%86%E9%A2%91-ffmpeg/">https://coderwdd.top/2023/04/09/%E9%9F%B3%E8%A7%86%E9%A2%91-ffmpeg/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E9%9F%B3%E8%A7%86%E9%A2%91/">音视频</a><a class="post-meta__tags" href="/tags/ffmpeg/">FFmpeg</a></div><div class="post_share"><div class="social-share" data-image="https://www.dmoe.cc/random.php" data-sites="facebook,twitter,google,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2023/04/08/av/%E9%9F%B3%E8%A7%86%E9%A2%91-%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B51/"><img class="next-cover" src="https://www.dmoe.cc/random.php" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">音视频_基础概念1</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2023/04/08/av/%E9%9F%B3%E8%A7%86%E9%A2%91-%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B51/" title="音视频_基础概念1"><img class="cover" src="https://www.dmoe.cc/random.php" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-04-08</div><div class="title">音视频_基础概念1</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/favicon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">CoderWdd</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">81</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">60</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">15</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/CoderWdd"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/CoderWDD" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:coderwdd@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-FFmpeg"><span class="toc-number">1.</span> <span class="toc-text">什么是 FFmpeg</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FFmpeg-%E7%9A%84%E7%BB%84%E6%88%90%E5%BA%93"><span class="toc-number">2.</span> <span class="toc-text">FFmpeg 的组成库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#libavcodec%EF%BC%9A-provides-implementation-of-a-wider-range-of-codecs"><span class="toc-number">2.1.</span> <span class="toc-text">libavcodec： provides implementation of a wider range of codecs.</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#libavformat%EF%BC%9A-implements-streaming-protocols-container-formats-and-basic-I-x2F-O-access"><span class="toc-number">2.2.</span> <span class="toc-text">libavformat： implements streaming protocols, container formats and basic I&#x2F;O access.</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#libavutil%EF%BC%9A-includes-hashers-decompressors-and-miscellaneous-utility-functions"><span class="toc-number">2.3.</span> <span class="toc-text">libavutil： includes hashers, decompressors and miscellaneous utility functions.</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#libavfilter%EF%BC%9A-provides-means-to-alter-decoded-audio-and-video-through-a-directed-graph-of-connected-filters"><span class="toc-number">2.4.</span> <span class="toc-text">libavfilter： provides means to alter decoded audio and video through a directed graph of connected filters.</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#libavdevice%EF%BC%9A-provides-an-abstraction-to-access-capture-and-playback-devices"><span class="toc-number">2.5.</span> <span class="toc-text">libavdevice： provides an abstraction to access capture and playback devices.</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#libswresample%EF%BC%9A-implements-audio-mixing-and-resampling-routines"><span class="toc-number">2.6.</span> <span class="toc-text">libswresample： implements audio mixing and resampling routines.</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#libswscale%EF%BC%9A-implements-color-conversion-and-scaling-routines"><span class="toc-number">2.7.</span> <span class="toc-text">libswscale： implements color conversion and scaling routines.</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FFmpeg-%E8%AF%AD%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">FFmpeg 语法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95%E6%A0%BC%E5%BC%8F"><span class="toc-number">3.1.</span> <span class="toc-text">基本语法格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9F%B3%E9%A2%91%E9%80%89%E9%A1%B9"><span class="toc-number">3.2.</span> <span class="toc-text">音频选项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%86%E9%A2%91%E9%80%89%E9%A1%B9"><span class="toc-number">3.3.</span> <span class="toc-text">视频选项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E9%80%89%E9%A1%B9"><span class="toc-number">3.4.</span> <span class="toc-text">文件选项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E9%80%89%E9%A1%B9"><span class="toc-number">3.5.</span> <span class="toc-text">全局选项</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="toc-number">4.</span> <span class="toc-text">工作流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A8%E8%8D%90-x2F-%E5%8F%82%E8%80%83"><span class="toc-number">5.</span> <span class="toc-text">推荐&#x2F;参考</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/04/09/%E9%9F%B3%E8%A7%86%E9%A2%91-ffmpeg/" title="音视频_FFmpeg"><img src="https://www.dmoe.cc/random.php" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="音视频_FFmpeg"/></a><div class="content"><a class="title" href="/2023/04/09/%E9%9F%B3%E8%A7%86%E9%A2%91-ffmpeg/" title="音视频_FFmpeg">音视频_FFmpeg</a><time datetime="2023-04-09T07:06:47.000Z" title="Created 2023-04-09 15:06:47">2023-04-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/04/08/av/%E9%9F%B3%E8%A7%86%E9%A2%91-%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B51/" title="音视频_基础概念1"><img src="https://www.dmoe.cc/random.php" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="音视频_基础概念1"/></a><div class="content"><a class="title" href="/2023/04/08/av/%E9%9F%B3%E8%A7%86%E9%A2%91-%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B51/" title="音视频_基础概念1">音视频_基础概念1</a><time datetime="2023-04-08T10:03:40.000Z" title="Created 2023-04-08 18:03:40">2023-04-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/04/07/android/advanced/android-ui-%E5%88%B7%E6%96%B0%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" title="Android_UI_刷新源码解析"><img src="https://www.dmoe.cc/random.php" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Android_UI_刷新源码解析"/></a><div class="content"><a class="title" href="/2023/04/07/android/advanced/android-ui-%E5%88%B7%E6%96%B0%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" title="Android_UI_刷新源码解析">Android_UI_刷新源码解析</a><time datetime="2023-04-07T02:48:48.000Z" title="Created 2023-04-07 10:48:48">2023-04-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/04/05/android/advanced/paging3-%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" title="Paging3_源码解析"><img src="https://www.dmoe.cc/random.php" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Paging3_源码解析"/></a><div class="content"><a class="title" href="/2023/04/05/android/advanced/paging3-%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" title="Paging3_源码解析">Paging3_源码解析</a><time datetime="2023-04-05T14:26:40.000Z" title="Created 2023-04-05 22:26:40">2023-04-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/04/05/android/advanced/retrofit-%E5%88%9D%E6%8E%A2%E6%BA%90%E7%A0%81/" title="Retrofit_初探源码"><img src="https://www.dmoe.cc/random.php" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Retrofit_初探源码"/></a><div class="content"><a class="title" href="/2023/04/05/android/advanced/retrofit-%E5%88%9D%E6%8E%A2%E6%BA%90%E7%A0%81/" title="Retrofit_初探源码">Retrofit_初探源码</a><time datetime="2023-04-05T13:43:39.000Z" title="Created 2023-04-05 21:43:39">2023-04-05</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023 By CoderWdd</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">备案编号：桂ICP备2022010533号</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
